@@ -52,7 +52,7 @@ def get_dataset(name):
         X = data.data
         y = data.target
     elif name == 'Credit card':
-        data1 = pd.read_csv("D:\\BDA project\\BDA\\default of credit card clients.csv")
+        data1 = pd.read_csv("default of credit card clients.csv")
         y = data1.iloc[:,-1]
         X = data1.iloc[:, 1:-1]
     else:
