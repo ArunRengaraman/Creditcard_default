@@ -122,14 +122,5 @@ plt.colorbar()
 st.pyplot(fig)
 
 
-# In[ ]:
 
-
-
-
-
-# In[ ]:
-
-
-import s
 
