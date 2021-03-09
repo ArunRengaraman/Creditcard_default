@@ -34,30 +34,21 @@ Which one is the best?
 """)
 
 dataset_name = st.sidebar.selectbox(
-    'Select Dataset',
-    ('Iris', 'Credit card')
-)
+    "Select Dataset",("Credit_card","Dummy"))
 
 st.write(f"## {dataset_name} Dataset")
 
 classifier_name = st.sidebar.selectbox(
     'Select classifier',
-    ('KNN', 'SVM', 'Random Forest')
+    ('GB', 'SVM', 'Random Forest')
 )
 
 def get_dataset(name):
     data = None
-    if name == 'Iris':
-        data = datasets.load_iris()
-        X = data.data
-        y = data.target
-    elif name == 'Credit card':
-        data1 = pd.read_csv("default of credit card clients.csv")
-        y = data1.iloc[:,-1]
-        X = data1.iloc[:, 1:-1]
-    else:
-        return 0
-            
+    name == 'Credit card'
+    data = pd.read_csv("D:\\BDA project\\BDA\\default of credit card clients.csv")
+    X = data.iloc[:, 1:-1]
+    y = data.iloc[:,-1]         
     return X, y
 
 X, y = get_dataset(dataset_name)
@@ -69,9 +60,11 @@ def add_parameter_ui(clf_name):
     if clf_name == 'SVM':
         C = st.sidebar.slider('C', 0.01, 10.0)
         params['C'] = C
-    elif clf_name == 'KNN':
-        K = st.sidebar.slider('K', 1, 15)
-        params['K'] = K
+    elif clf_name == 'GB':
+        max_depth = st.sidebar.slider('max_depth', 2, 15)
+        params['max_depth'] = max_depth
+        n_estimators = st.sidebar.slider('n_estimators', 1, 100)
+        params['n_estimators'] = n_estimators
     else:
         max_depth = st.sidebar.slider('max_depth', 2, 15)
         params['max_depth'] = max_depth
@@ -85,8 +78,8 @@ def get_classifier(clf_name, params):
     clf = None
     if clf_name == 'SVM':
         clf = SVC(C=params['C'])
-    elif clf_name == 'KNN':
-        clf = KNeighborsClassifier(n_neighbors=params['K'])
+    elif clf_name == 'GB':
+        clf = GradientBoostingClassifier(n_estimators=params['n_estimators'],max_depth=params['max_depth'],random_state=1234)
     else:
         clf = clf = RandomForestClassifier(n_estimators=params['n_estimators'], 
             max_depth=params['max_depth'], random_state=1234)
@@ -104,6 +97,40 @@ acc = accuracy_score(y_test, y_pred)
 
 st.write(f'Classifier = {classifier_name}')
 st.write(f'Accuracy =', acc)
+
+st.write('Enter the values for prediction')
+LIMIT_BAL = st.number_input("LIMIT_BAL")
+SEX = st.number_input("SEX")
+EDUCATION=st.number_input("EDUCATION")
+MARRIAGE=st.number_input("MARRIAGE")
+AGE=st.number_input("AGE")
+PAY_0=st.number_input("PAY_0")
+PAY_2=st.number_input("PAY_2")
+PAY_3=st.number_input("PAY_3")
+PAY_4=st.number_input("PAY_4")
+PAY_5=st.number_input("PAY_5")
+PAY_6=st.number_input("PAY_6")
+BILL_AMT1=st.number_input("BILL_AMT1")
+BILL_AMT2=st.number_input("BILL_AMT2")
+BILL_AMT3=st.number_input("BILL_AMT3")
+BILL_AMT4=st.number_input("BILL_AMT4")
+BILL_AMT5=st.number_input("BILL_AMT5")
+BILL_AMT6=st.number_input("BILL_AMT6")
+PAY_AMT1=st.number_input("PAY_AMT1")
+PAY_AMT2=st.number_input("PAY_AMT2")
+PAY_AMT3=st.number_input("PAY_AMT3")
+PAY_AMT4=st.number_input("PAY_AMT4")
+PAY_AMT5=st.number_input("PAY_AMT5")
+PAY_AMT6=st.number_input("PAY_AMT6")
+client_data = [LIMIT_BAL,SEX,EDUCATION,MARRIAGE,AGE,PAY_0,PAY_2,PAY_3,PAY_4,PAY_5,PAY_6,BILL_AMT1,BILL_AMT2,BILL_AMT3,BILL_AMT4,BILL_AMT5,BILL_AMT6,PAY_AMT1,PAY_AMT2,PAY_AMT3,PAY_AMT4,PAY_AMT5,PAY_AMT6]
+data= np.array(list(client_data)).reshape(1,-1)
+
+clf.predict(data)
+if clf.predict(data)[0] == 1:
+    st.write("the customer is default")
+else:
+    st.write("Not default")
+
 
 #### PLOT DATASET ####
 # Project the data onto the 2 primary principal components
@@ -124,16 +151,5 @@ plt.colorbar()
 
 #plt.show()
 st.pyplot(fig)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
 
 
