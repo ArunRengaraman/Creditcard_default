@@ -46,7 +46,7 @@ classifier_name = st.sidebar.selectbox(
 def get_dataset(name):
     data = None
     name == 'Credit card'
-    data = pd.read_csv(default of credit card clients.csv")
+    data = pd.read_csv("default of credit card clients.csv")
     X = data.iloc[:, 1:-1]
     y = data.iloc[:,-1]         
     return X, y
